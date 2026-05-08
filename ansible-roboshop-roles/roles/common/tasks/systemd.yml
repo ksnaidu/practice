@@ -1,14 +1,14 @@
-  - name: copy {{ component }} service to system directory
-    ansible.builtin.copy:
-      src: "{{ component }}.service.j2"
-      dest: "/etc/systemd/system/{{ component }}.service"
+  - name: copy catalogue service to system directory
+    ansible.builtin.template:
+      src: catalogue.service.j2"
+      dest: "/etc/systemd/system/catalogue.service"
 
   - name: systemctl deamon reload
     ansible.builtin.systemd_service:
       daemon_reload: true
 
-  - name: start and enable {{ component }}
+  - name: start and enable catalogue
     ansible.builtin.service:
-      name: "{{ component }}""
-      state: started
+      name: catalogue
+      state: restarted
       enabled: yes
