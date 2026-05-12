@@ -1,5 +1,5 @@
 
-  tasks:
+  
   - name: disable default nginx
     ansible.builtin.command: dnf module disable nginx -y
 
