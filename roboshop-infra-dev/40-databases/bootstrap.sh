@@ -7,4 +7,4 @@ ansible-pull \
   -U https://github.com/ksnaidu/practice.git \
   -e component=$1 \
   -e env=$2 \
-  ansible-roboshop-roles/main.yaml
+  ansible-roboshop-roles/main.yml
