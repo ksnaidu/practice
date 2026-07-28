@@ -1,3 +1,0 @@
-
-
-MONGODB_HOST: mongodb-{{ env }}.kimidi.site
