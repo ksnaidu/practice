@@ -1,0 +1,6 @@
+---
+- name: configure mongodb
+  hosts: mongodb
+  become: true
+  roles: # this will automatically laod a folder called roles in current working directory.
+  - mongodb

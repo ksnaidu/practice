@@ -1,10 +1,14 @@
 #!/bin/bash
+
 component=$1
+env=$2
+
 dnf install ansible -y
-#ansible-pull -U https://github.com/ksnaidu/practice.git//ansible-roboshop-roles  -e component=$1 -e env=$2 main.yaml
 
 ansible-pull \
-  -U https://github.com/ksnaidu/practice.git \
-  -e component=$1 \
-  -e env=$2 \
+  -U https://github.com/ksnaidu/11AM.git \
+  -e component=$component \
+  -e env=$env \
   ansible-roboshop-roles/main.yml
+
+  
