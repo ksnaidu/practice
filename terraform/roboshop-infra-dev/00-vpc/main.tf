@@ -7,4 +7,3 @@ module "vpc" {
     database_subnet_cidrs = var.database_subnet_cidrs
 }
   
-}
