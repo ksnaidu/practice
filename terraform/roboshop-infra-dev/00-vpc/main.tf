@@ -7,3 +7,7 @@ module "vpc" {
     database_subnet_cidrs = var.database_subnet_cidrs
 }
   
+#  output "vpc_id" {
+#      value = module.vpc.vpc_id
+#  } 
+
