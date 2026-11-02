@@ -6,14 +6,12 @@ variable "security_group_ids" {
 variable "tags" {
     default = {
         Name = "roboshop-cart"
-        terraform  "true"
-        environment = "dev"
+        Terraform = "true"
+        Environment = "dev"
     }
-  
 }
 
 variable "instance_type" {
     default = "t3.small"
-  
 }
 
