@@ -1,1 +1,1 @@
-MONGODB_HOST: "mongodb-{{ env }}.kimidi.site"
+MONGODB_HOST: "mongodb-{{ env }}.kimidi.online"
