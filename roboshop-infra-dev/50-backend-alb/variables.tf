@@ -1,18 +1,18 @@
 variable "project" {
-  default = "roboshop"
+    default = "roboshop"
+  
 }
 
 variable "environment" {
-  default = "dev"
+     default = "dev"
 }
 
 variable "zone_id" {
-  default = "Z06008633JIHZ67B3RC4Q"
+    default = "Z03760812F4TTJZH39I7A"
   
 }
 
 variable "zone_name" {
-  default = "kimidi.site"
+    default = "kimidi.online"
   
 }
-

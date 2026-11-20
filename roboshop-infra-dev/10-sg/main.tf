@@ -1,45 +1,52 @@
-  module "frontend" {
+ module "frontend" {
     source = "../../terraform-aws-securitygroup"
-	project = var.project
+	  project = var.project
     environment = var.environment
 
     sg_name = var.frontend_sg_name
     sg_description = var.frontend_sg_description
+    # vpc_id = data.aws_ssm_parameter.vpc_id
+    
     vpc_id = local.vpc_id  ##vpc-id stored in ssm parameter after create.
 }
+  
 
 
-module "bastion" {
-    #source = "../../terraform-aws-securitygroup"
-    source = "git::https://github.com/ksnaidu/11AM.git//terraform-aws-securitygroup?ref=main"
-    project = var.project
+  module "bastion" {
+    source = "../../terraform-aws-securitygroup"
+	  project = var.project
     environment = var.environment
 
     sg_name = var.bastion_sg_name
     sg_description = var.bastion_sg_description
-    vpc_id = local.vpc_id
+    # vpc_id = data.aws_ssm_parameter.vpc_id
+    
+    vpc_id = local.vpc_id  ##vpc-id stored in ssm parameter after create.
 }
+  
 
 
 resource "aws_security_group_rule" "bastion_laptop" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
+  type = "ingress"
+  from_port = 22
+  to_port = 22
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
   security_group_id = module.bastion.sg_id
+  
 }
+
 
 module "backend_alb" {
-  source = "git::https://github.com/ksnaidu/11AM.git//terraform-aws-securitygroup?ref=main"
-  project = var.project
-  environment = var.environment
+    source = "../../terraform-aws-securitygroup"
+    #source = "git::https://github.com/daws-84s/terraform-aws-securitygroup.git?ref=main"
+    project = var.project
+    environment = var.environment
 
-  sg_name = "backend-alb"
-  sg_description = "for backend-alb"
-  vpc_id = local.vpc_id ##vpc-id stored in ssm parameter after create.
+    sg_name = "backend-alb"
+    sg_description = "for backend alb"
+    vpc_id = local.vpc_id
 }
-
 
 resource "aws_security_group_rule" "backend_alb_bastion" {
   type              = "ingress"
@@ -51,17 +58,20 @@ resource "aws_security_group_rule" "backend_alb_bastion" {
 }
 
 
-module "vpn" {
-  source = "git::https://github.com/ksnaidu/11AM.git//terraform-aws-securitygroup?ref=main"
-  project = var.project
-  environment = var.environment
 
-  sg_name = "vpn"
-  sg_description = "for vpn"
-  vpc_id = local.vpc_id ##vpc-id stored in ssm parameter after create.
+  module "vpn" {
+    source = "../../terraform-aws-securitygroup"
+	  project = var.project
+    environment = var.environment
+
+    sg_name = "vpn"
+    sg_description = "for vpn"
+    # vpc_id = data.aws_ssm_parameter.vpc_id
+    
+    vpc_id = local.vpc_id  ##vpc-id stored in ssm parameter after create.
 }
+  
 
-#VPN ports 22, 443, 1194, 943
 resource "aws_security_group_rule" "vpn_ssh" {
   type              = "ingress"
   from_port         = 22
@@ -99,31 +109,19 @@ resource "aws_security_group_rule" "vpn_943" {
 }
 
 
-module "mongodb" {
-    #source = "../../terraform-aws-securitygroup"
-    source = "git::https://github.com/ksnaidu/11AM.git//terraform-aws-securitygroup?ref=main"
-    project = var.project
+
+  module "mongodb" {
+    source = "../../terraform-aws-securitygroup"
+	  project = var.project
     environment = var.environment
 
     sg_name = "mongodb"
     sg_description = "for mongodb"
-    vpc_id = local.vpc_id
+    # vpc_id = data.aws_ssm_parameter.vpc_id
+    
+    vpc_id = local.vpc_id  ##vpc-id stored in ssm parameter after create.
 }
 
-
-module "catalogue" {
-    #source = "../../terraform-aws-securitygroup"
-    source = "git::https://github.com/ksnaidu/11AM.git//terraform-aws-securitygroup?ref=main"
-    project = var.project
-    environment = var.environment
-
-    sg_name = "catalogue"
-    sg_description = "for catalogue"
-    vpc_id = local.vpc_id
-}
-
-
-# MongoDB
 resource "aws_security_group_rule" "mongodb_vpn" {
   count = length(var.mongodb_ports_vpn)
   type              = "ingress"
@@ -134,40 +132,45 @@ resource "aws_security_group_rule" "mongodb_vpn" {
   security_group_id = module.mongodb.sg_id
 }
 
-#redis
 
-module "redis" {
-    #source = "../../terraform-aws-securitygroup"
-    source = "git::https://github.com/ksnaidu/11AM.git//terraform-aws-securitygroup?ref=main"
-    project = var.project
+  module "redis" {
+    source = "../../terraform-aws-securitygroup"
+	  project = var.project
     environment = var.environment
 
     sg_name = "redis"
     sg_description = "for redis"
-    vpc_id = local.vpc_id
+    # vpc_id = data.aws_ssm_parameter.vpc_id
+    
+    vpc_id = local.vpc_id  ##vpc-id stored in ssm parameter after create.
 }
 
-module "mysql" {
-    #source = "../../terraform-aws-securitygroup"
-    source = "git::https://github.com/ksnaidu/11AM.git//terraform-aws-securitygroup?ref=main"
-    project = var.project
+
+  module "mysql" {
+    source = "../../terraform-aws-securitygroup"
+	  project = var.project
     environment = var.environment
 
     sg_name = "mysql"
     sg_description = "for mysql"
-    vpc_id = local.vpc_id
+    # vpc_id = data.aws_ssm_parameter.vpc_id
+    
+    vpc_id = local.vpc_id  ##vpc-id stored in ssm parameter after create.
 }
 
-module "rabbitmq" {
-    #source = "../../terraform-aws-securitygroup"
-    source = "git::https://github.com/ksnaidu/11AM.git//terraform-aws-securitygroup?ref=main"
-    project = var.project
+
+  module "rabbitmq" {
+    source = "../../terraform-aws-securitygroup"
+	  project = var.project
     environment = var.environment
 
     sg_name = "rabbitmq"
     sg_description = "for rabbitmq"
-    vpc_id = local.vpc_id
+    # vpc_id = data.aws_ssm_parameter.vpc_id
+    
+    vpc_id = local.vpc_id  ##vpc-id stored in ssm parameter after create.
 }
+
 
 resource "aws_security_group_rule" "redis_vpn" {
   count = length(var.redis_ports_vpn)
@@ -190,6 +193,7 @@ resource "aws_security_group_rule" "mysql_vpn" {
   security_group_id = module.mysql.sg_id
 }
 
+
 resource "aws_security_group_rule" "rabbitmq_vpn" {
   count = length(var.rabbitmq_ports_vpn)
   type              = "ingress"
@@ -200,14 +204,28 @@ resource "aws_security_group_rule" "rabbitmq_vpn" {
   security_group_id = module.rabbitmq.sg_id
 }
 
+
+  module "catalogue" {
+    source = "../../terraform-aws-securitygroup"
+	  project = var.project
+    environment = var.environment
+
+    sg_name = "catalogue"
+    sg_description = "for catalogue"
+    # vpc_id = data.aws_ssm_parameter.vpc_id
+    
+    vpc_id = local.vpc_id  ##vpc-id stored in ssm parameter after create.
+}
+
+
+
 resource "aws_security_group_rule" "catalogue_vpn_ssh" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  source_security_group_id = module.vpn.sg_id 
+  source_security_group_id = module.vpn.sg_id
   security_group_id = module.catalogue.sg_id
-
 }
 
 resource "aws_security_group_rule" "catalogue_bastion_ssh" {
@@ -215,9 +233,8 @@ resource "aws_security_group_rule" "catalogue_bastion_ssh" {
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  source_security_group_id = module.bastion.sg_id 
+  source_security_group_id = module.bastion.sg_id
   security_group_id = module.catalogue.sg_id
-
 }
 
 resource "aws_security_group_rule" "catalogue_vpn_http" {
@@ -225,9 +242,8 @@ resource "aws_security_group_rule" "catalogue_vpn_http" {
   from_port         = 8080
   to_port           = 8080
   protocol          = "tcp"
-  source_security_group_id = module.vpn.sg_id 
+  source_security_group_id = module.vpn.sg_id
   security_group_id = module.catalogue.sg_id
-
 }
 
 resource "aws_security_group_rule" "catalogue_backend_alb" {
@@ -235,17 +251,16 @@ resource "aws_security_group_rule" "catalogue_backend_alb" {
   from_port         = 8080
   to_port           = 8080
   protocol          = "tcp"
-  source_security_group_id = module.backend_alb.sg_id 
+  source_security_group_id = module.backend_alb.sg_id
   security_group_id = module.catalogue.sg_id
-
 }
+
 
 resource "aws_security_group_rule" "mongodb_catalogue" {
   type              = "ingress"
   from_port         = 27017
   to_port           = 27017
   protocol          = "tcp"
-  source_security_group_id = module.catalogue.sg_id 
+  source_security_group_id = module.catalogue.sg_id
   security_group_id = module.mongodb.sg_id
-
 }

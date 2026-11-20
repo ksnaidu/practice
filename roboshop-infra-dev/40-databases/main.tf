@@ -1,3 +1,4 @@
+###mongodb
 resource "aws_instance" "mongodb" {
   ami           = local.ami_id
   instance_type = "t3.micro"
@@ -39,7 +40,7 @@ resource "terraform_data" "mongodb" {
 
 
 
-#redis
+###redis
 
 resource "aws_instance" "redis" {
   ami           = local.ami_id
@@ -81,6 +82,7 @@ resource "terraform_data" "redis" {
 }
 
 
+
 ###mysql
 
 resource "aws_instance" "mysql" {
@@ -88,7 +90,7 @@ resource "aws_instance" "mysql" {
   instance_type = "t3.micro"
   vpc_security_group_ids = [local.mysql_sg_id]
   subnet_id = local.database_subnet_id
-  iam_instance_profile = "Ec2roletofetchssmparams"
+
   tags = merge(
     local.common_tags,
     {
@@ -123,7 +125,7 @@ resource "terraform_data" "mysql" {
 }
 
 
-##rabbitmq
+###rabbitmq
 
 resource "aws_instance" "rabbitmq" {
   ami           = local.ami_id
@@ -167,7 +169,7 @@ resource "terraform_data" "rabbitmq" {
 
 resource "aws_route53_record" "mongodb" {
   zone_id = var.zone_id
-  name    = "mongodb-${var.environment}.${var.zone_name}"  ## mongodb-dev.kimidi.site 
+  name    = "mongodb-${var.environment}.${var.zone_name}"  ## mongodb-dev.kimidi.online
   type    = "A"
   ttl     = 1
   records = [aws_instance.mongodb.private_ip]
@@ -176,7 +178,7 @@ resource "aws_route53_record" "mongodb" {
 
 resource "aws_route53_record" "redis" {
   zone_id = var.zone_id
-  name    = "redis-${var.environment}.${var.zone_name}"  ## redis-dev.kimidi.site 
+  name    = "redis-${var.environment}.${var.zone_name}"  ## redis-dev.kimidi.online
   type    = "A"
   ttl     = 1
   records = [aws_instance.redis.private_ip]
@@ -185,7 +187,7 @@ resource "aws_route53_record" "redis" {
 
 resource "aws_route53_record" "mysql" {
   zone_id = var.zone_id
-  name    = "mysql-${var.environment}.${var.zone_name}"  ## mysql-dev.kimidi.site 
+  name    = "mysql-${var.environment}.${var.zone_name}"  ## mysql-dev.kimidi.online 
   type    = "A"
   ttl     = 1
   records = [aws_instance.mysql.private_ip]
@@ -194,10 +196,9 @@ resource "aws_route53_record" "mysql" {
 
 resource "aws_route53_record" "rabbitmq" {
   zone_id = var.zone_id
-  name    = "rabbitmq-${var.environment}.${var.zone_name}"  ## rabbitmq-dev.kimidi.site 
+  name    = "rabbitmq-${var.environment}.${var.zone_name}"  ## rabbitmq-dev.kimidi.online 
   type    = "A"
   ttl     = 1
   records = [aws_instance.rabbitmq.private_ip]
   allow_overwrite = true 
 }
-

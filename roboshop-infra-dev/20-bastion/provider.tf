@@ -1,22 +1,23 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
-      version = "5.98.0"
+        source = "hashicorp/aws"
+        version = "5.98.0"
     }
   }
 
+
   backend "s3" {
-    bucket = "11am-remote-state-dev"
+    bucket = "6pm-remote-state-dev"
     key    = "roboshop-dev-bastion"
     region = "us-east-1"
-    encrypt        = true
-    use_lockfile = true
+    # dynamodb_table= "11am-remote-state-lock"
+    encrypt       = true
+    use_lockfile  = true
   }
 }
-
+#configure the aws provider
 provider "aws" {
-  # Configuration options
-  region = "us-east-1"
+    region = "us-east-1"
+  
 }
-
